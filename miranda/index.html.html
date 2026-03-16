@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Invitación Luciano</title>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial;
+  background-image:url("From KlickPin CF 95 lucky number _ Coches de disney Desbloqueo de pantalla iphone Fondo de pantalla de rolls royce.jpg"); /* Fondo */
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:center;
+  color:white;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Overlay */
+body::before{
+  content:"";
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(255,0,0,0.35);
+  z-index:-1;
+}
+
+/* SOBRE */
+.sobre{
+  width:300px;
+  cursor:pointer;
+  animation:flotar 3s infinite ease-in-out;
+}
+@keyframes flotar{
+  0%{transform:translateY(0px)}
+  50%{transform:translateY(-15px)}
+  100%{transform:translateY(0px)}
+}
+
+/* CONTENIDO */
+.contenido{
+  display:none;
+  background:rgba(0,0,0,0.75);
+  padding:20px;
+  border-radius:15px;
+  max-width:420px;
+  width:90%;
+}
+h1{ color:#FFD700; }
+#contador{ margin-top:15px; font-size:18px; color:#00FFFF; }
+
+.video-container{ display:flex; justify-content:center; margin-top:20px; }
+video{ border-radius:10px; width:320px; }
+
+.iconos img{ width:60px; margin:10px; cursor:pointer; transition:transform 0.3s; }
+.iconos img:hover{ transform:scale(1.2); }
+
+footer{ margin-top:20px; font-size:14px; color:#FFD700; }
+
+/* Animación confeti */
+@keyframes caer {
+  to { transform: translateY(100vh); opacity:0; }
+}
+</style>
+</head>
+<body>
+
+<!-- SOBRE -->
+<img src="sobre.png.png" class="sobre" id="sobre" onclick="abrirSobre()">
+
+<!-- CONTENIDO -->
+<div class="contenido" id="contenido">
+  <h1>🎉 Invitación Especial 🎉</h1>
+  <p>Escribe tu nombre</p>
+  <input id="nombre" placeholder="Tu nombre" onfocus="lanzarConfeti()">
+  <br>
+  <button onclick="mostrarInvitacion()">Abrir Invitación</button>
+
+  <div id="mensaje"></div>
+  <div id="contador"></div>
+
+  <!-- VIDEO -->
+  <div class="video-container">
+    <video id="video" controls style="display:none;">
+      <source src="WhatsApp Video 2026-03-14 at 10.56.03 PM.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- ICONOS -->
+  <div class="iconos" id="botones" style="display:none;">
+    <a href="https://wa.me/50686436567?text=Hola%20confirmo%20mi%20asistencia%20al%20cumpleaños%20de%20Luciano" target="_blank">
+      <img src="whatsapp.png">
+    </a>
+    <a href="https://ul.waze.com/ul?place=ChIJ2YDTw5_joI8RWcd5lUwnRqw&ll=9.91794610%2C-84.05805950&navigate=yes" target="_blank">
+      <img src="waze.png">
+    </a>
+  </div>
+
+  <footer>© Derechos reservados Andrey Miranda 2026</footer>
+</div>
+
+<!-- CANVAS PARA EFECTOS -->
+<canvas id="efectos" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
+
+<script>
+function abrirSobre(){
+  document.getElementById("sobre").style.display="none";
+  document.getElementById("contenido").style.display="block";
+}
+
+function mostrarInvitacion(){
+  let nombre=document.getElementById("nombre").value;
+  if(nombre.trim()==""){ alert("Escribe tu nombre primero"); return; }
+
+  document.getElementById("mensaje").innerHTML =
+    `<h2 style="color:#FFD700;">Hola ${nombre} 👋</h2><br>
+    Luciano quiere invitarte a celebrar<br>
+    su cumpleaños número <b>2</b> 🚗🎂<br><br>
+    📅 17 de Mayo<br> ⏰ 12:00 MD`;
+
+  document.getElementById("video").style.display="block";
+  document.getElementById("botones").style.display="block";
+
+  iniciarConteo();
+
+  document.getElementById("nombre").style.display="none";
+  document.querySelector("button").style.display="none";
+  document.querySelector("p").style.display="none";
+
+  // Solo fuegos artificiales aquí
+  fuegosArtificiales();
+}
+
+function iniciarConteo(){
+  let fechaEvento = new Date("May 17, 2026 12:00:00").getTime();
+  let intervalo = setInterval(() => {
+    let ahora = new Date().getTime();
+    let diferencia = fechaEvento - ahora;
+
+    if (diferencia <= 0) {
+      clearInterval(intervalo);
+      document.getElementById("contador").innerHTML = "🎉 ¡Ya es el cumpleaños de Luciano! 🎉";
+      return;
+    }
+
+    let dias = Math.floor(diferencia / (1000*60*60*24));
+    let horas = Math.floor((diferencia % (1000*60*60*24))/(1000*60*60));
+    let minutos = Math.floor((diferencia % (1000*60*60))/(1000*60));
+    let segundos = Math.floor((diferencia % (1000*60))/1000);
+
+    document.getElementById("contador").innerHTML =
+      `⏳ Faltan ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos`;
+  }, 1000);
+}
+
+// Confeti al escribir nombre
+function lanzarConfeti() {
+  const duration = 3 * 1000; // 3 segundos
+  const end = Date.now() + duration;
+
+  (function frame() {
+    const colors = ['#FFD700','#FF0000','#00FFFF','#FF69B4'];
+    const confeti = document.createElement("div");
+    confeti.textContent = "🎉";
+    confeti.style.position = "fixed";
+    confeti.style.left = Math.random()*100 + "%";
+    confeti.style.top = "-20px";
+    confeti.style.fontSize = "24px";
+    confeti.style.color = colors[Math.floor(Math.random()*colors.length)];
+    confeti.style.animation = "caer 3s linear forwards";
+    document.body.appendChild(confeti);
+
+    setTimeout(()=>confeti.remove(),3000);
+
+    if(Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+}
+
+// Fuegos artificiales
+function fuegosArtificiales() {
+  const canvas = document.getElementById("efectos");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let particles = [];
+  for(let i=0;i<100;i++){
+    particles.push({
+      x: canvas.width/2,
+      y: canvas.height/2,
+      dx: (Math.random()-0.5)*6,
+      dy: (Math.random()-0.5)*6,
+      color: `hsl(${Math.random()*360},100%,50%)`,
+      life: 100
+    });
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x,p.y,3,3);
+      p.x += p.dx;
+      p.y += p.dy;
+      p.life--;
+    });
+    particles = particles.filter(p=>p.life>0);
+    if(particles.length>0) requestAnimationFrame(animate);
+  }
+  animate();
+}
+</script>
+</body>
+</html>
